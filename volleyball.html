@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>passing game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet">
+  <style>
+    #container {
+      background: url('./images/court2.jpg') no-repeat center/cover;
+      overflow: hidden;
+      height: 100vh;
+      margin-left: 0;
+      padding-bottom: 8px;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    #game {
+      height: 40%;
+      /* width: 1230px; */
+      width: 100%;
+      /* background-color: rgba(0, 0, 0, 0.8); */
+      position: absolute;
+      /* top: 342px; */
+      top: 60%;
+      /* cursor: none; */
+    }
+
+    .niceup {
+      width: 6%;
+      position: absolute;
+    }
+
+    .ball {
+      width: 65px;
+      position: absolute;
+      user-select: none;
+      -webkit-user-drag: none;
+      /* top: -71%;
+      left: 25%; */
+      z-index: 2;
+    }
+
+    #start-btn,
+    #levels-btn,
+    #rankings-btn {
+      height: 13%;
+      width: 20%;
+      border: none;
+      /* background: radial-gradient(#ffc100, #ffa900); */
+      background: linear-gradient(45deg, #e8cb49, #fcc90c 80%);
+      color: transparent;
+      border: 4px solid #fcc90c;
+      background-clip: text;
+      font-weight: bold;
+      font-size: 45px;
+      border-radius: 40px;
+      line-height: 7%;
+      /* font-family: "Anton", sans-serif; */
+      font-family: "Rubik", sans-serif;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      /* margin-top: 10px; */
+      cursor: pointer;
+    }
+
+    #levels-btn {
+      left: 27%;
+    }
+
+    #rankings-btn {
+      left: 73%;
+    }
+
+    #start-btn:hover,
+    #levels-btn:hover,
+    #rankings-btn:hover {
+      background: #fbd80c;
+      color: white;
+      border: none;
+
+    }
+
+    /* #start-btn:disabled {
+      display: none;
+    } */
+
+    #player {
+      position: absolute;
+      width: 300px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #scoring-board {
+      /* width: 450px; */
+      width: 35%;
+      height: 130px;
+      margin: auto;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      /* margin-top: 10px; */
+      padding-top: 10px;
+
+      table {
+        margin: auto;
+        width: 95%;
+        background-color: rgba(0, 0, 0, 0.3);
+        border: 3px solid white;
+        border-radius: 20px;
+        color: white;
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        border-collapse: collapse;
+
+        td,
+        th {
+          border: 7px solid white;
+          width: calc(100/3);
+
+        }
+
+        td {
+          color: #e96e23;
+          font-family: "Anton", sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 50px;
+        }
+      }
+    }
+
+    #levels-menu {
+      background-color: rgba(232, 203, 73, 0.5);
+      /* background: url('./images/volleyballball.png') no-repeat center/120%; */
+      /* border: 10px solid #fccd0b; */
+      width: 30%;
+      height: 45%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 30px;
+      z-index: 2;
+      display: none;
+
+      .level-ball {
+        width: 17%;
+        position: absolute;
+        top: 10%;
+        left: 5%;
+      }
+
+      .level-ball:nth-of-type(2) {
+        top: 39%;
+        left: 5%;
+      }
+
+      .level-ball:nth-of-type(3) {
+        top: 68%;
+        left: 5%;
+      }
+
+    }
+
+    .level {
+      background: linear-gradient(90deg, #120e3f, #493dc5 80%);
+      /* background: url('./images/volleyballball.png') no-repeat center/70%; */
+      width: 85%;
+      height: 23%;
+      line-height: 235%;
+      color: white;
+      position: absolute;
+      border-radius: 20px;
+      font-size: 40px;
+      text-align: center;
+      font-weight: bold;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      top: 11%;
+      left: 8%;
+      cursor: pointer;
+      font-family: "Rubik", sans-serif;
+    }
+
+    .level:hover {
+      background: #483dc5ad;
+    }
+
+    .level:nth-of-type(2) {
+      top: 40%;
+    }
+
+    .level:nth-of-type(3) {
+      top: 69%;
+    }
+
+    #rankings-menu {
+      background-color: rgba(62, 69, 149);
+      width: 30%;
+      height: 60%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 30px;
+      z-index: 2;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      text-align: center;
+      /* display: none; */
+
+      #close-btn {
+        background-color: #e8cb49;
+        position: absolute;
+        left: 90%;
+        top: -2%;
+        color: white;
+        width: 8%;
+        height: 8%;
+        line-height: 145%;
+        border-radius: 50%;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: inset 1px 1px 5px #7c6c26,
+          1px 1px 5px #7c6c26;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 50px;
+        color: white;
+        margin: 10px;
+      }
+
+      .ranking-info {
+        width: 90%;
+        height: 13%;
+        margin: auto;
+        text-align: center;
+        font-size: 30px;
+        color: white;
+        position: absolute;
+        background: #e8cb49;
+        border-radius: 20px;
+        left: 5%;
+        line-height: 220%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .ranking-info:nth-of-type(2) {
+        top: 31%;
+      }
+
+      .ranking-info:nth-of-type(3) {
+        top: 48%;
+      }
+
+      .ranking-info:nth-of-type(4) {
+        top: 65%;
+      }
+
+      .ranking-info:nth-of-type(5) {
+        top: 82%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="scoring-board">
+      <table>
+        <tr>
+          <th>YOUR SCORE</th>
+          <th>TIME</th>
+          <th>HIGHEST SCORE</th>
+        </tr>
+        <tr>
+          <td id="score">0</td>
+          <td id="time-left">00</td>
+          <td id="high-score">0</td>
+        </tr>
+      </table>
+    </div>
+    <div id="btns">
+      <button id="start-btn">START</button>
+      <button id="levels-btn">LEVELS</button>
+      <button id="rankings-btn">RANKINGS</button>
+    </div>
+
+    <div id="levels-menu">
+      <div class="level">Professional</div>
+      <img class="level-ball" src="./images/volleyballball.png">
+      <div class="level">Intermediate</div>
+      <img class="level-ball" src="./images/volleyballball.png">
+      <div class="level">Beginner</div>
+      <img class="level-ball" src="./images/volleyballball.png">
+    </div>
+
+    <div id="rankings-menu">
+      <h1>Rankings</h1>
+      <div id="close-btn">X</div>
+      <div class="ranking-info">
+        <span class="rank">1</span>
+        <span class="rank-name">You-know-who</span>
+        <span class="rank-score">10</span>
+      </div>
+      <div class="ranking-info">
+        <span class="rank">2</span>
+        <span class="rank-name">You-know-who</span>
+        <span class="rank-score">10</span>
+      </div>
+      <div class="ranking-info">
+        <span class="rank">3</span>
+        <span class="rank-name">You-know-who</span>
+        <span class="rank-score">10</span>
+      </div>
+      <div class="ranking-info">
+        <span class="rank">4</span>
+        <span class="rank-name">You-know-who</span>
+        <span class="rank-score">10</span>
+      </div>
+      <div class="ranking-info">
+        <span class="rank">5</span>
+        <span class="rank-name">You-know-who</span>
+        <span class="rank-score">10</span>
+      </div>
+    </div>
+
+    <div id="game">
+      <!-- <img class="niceup" src="./images/niceup.png"> -->
+      <!-- <img src="./images/passing.png" id="player"> -->
+      <!-- <img src="./images/real-ball.png" class="ball"> -->
+    </div>
+  </div>
+
+  <!-- jQuery -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'
+    integrity='sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=='
+    crossorigin='anonymous'></script>
+  <!-- sweetalert2  -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const GAME_TIME = 10;
+    let score = 0;
+    let timeLeft = 0;
+    let timer = 0;
+    const highScore = { name: '', score: 0 }
+
+    // 開始按鈕
+    $('#start-btn').on('click', function () {
+      // 把 player 及 滑鼠綁定事件都刪除，才不會重複綁定造成畫面問題
+      resetGame()
+      // 綁定球員事件
+      playerMove()
+      $(this).attr('disabled', true)
+      $('#btns').css('display', 'none')
+      $('#game').css('cursor', 'none')
+      score = 0;
+      $('#score').text(score)
+      timeLeft = GAME_TIME
+      $('#time-left').text(timeLeft)
+
+      timer = setInterval(function () {
+        timeLeft--
+        $('#time-left').text(timeLeft)
+
+        // 排球隨機出現
+        if ($('.ball').length < 10) {
+          const gameWidth = $('#game').width()
+          const gameHeight = $('#game').height()
+          const ball = $('<img src="./images/real-ball.png" class="ball">')
+          let topPercent = -Math.round(Math.random() * (130 - 100) + 100)
+          let leftPercent = Math.round(Math.random() * (90 - 16) + 16)
+          let top = topPercent * gameHeight / 100
+          let left = leftPercent * gameWidth / 100
+          let vx = (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 20 + 4)
+          let vy = 0;
+          let gravity = Math.round(Math.random() * (2.5 - 0.9) + 0.9)
+
+          ball.addClass('ball')
+          ball.css({ top, left })
+          $('#game').append(ball)
+
+          const timeOut = setTimeout(function () {
+            ball.fadeOut(400, function () {
+              ball.remove()
+            })
+          }, 400)
+
+          // 每 20 毫秒更新球的移動狀態，讓球移動更流暢
+          const interval = setInterval(function () {
+            vy += gravity;
+            top += vy;
+            left += vx;
+            if (left < 0 || left > gameWidth - 65) {
+              vx *= -1;
+            }
+            if (top >= gameHeight - 65) {
+              top = gameHeight - (Math.round(Math.random() * (gameHeight - 65) + 65));
+              vy = 0;
+              vx = 0;
+              clearInterval(interval);
+            }
+            ball.css({ top, left })
+          }, 20);
+        }
+
+        // 時間到取消計時器
+        if (timeLeft === 0) {
+          clearInterval(timer)
+          $('#start-btn').attr('disabled', false)
+          // $('#levels-btn').css('display', 'block')
+          // $('#rankings-btn').css('display', 'block')
+          $('#btns').css('display', 'block')
+          $('#game').empty()
+          // 判定最高分
+          if (score > highScore.score) {
+            Swal.fire({
+              title: "You are the best libero ever!",
+              text: 'please enter your name',
+              input: 'text',
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+            })
+              .then(result => {
+                const name = result.value || 'You-Know-Who'
+                highScore.score = score
+                $('#high-score').text(score)
+                score = 0;
+                $('#score').text(score)
+              })
+              .then()
+          }
+        }
+
+
+
+      }, 1000)
+    })
+
+    $('#game').on('mousemove', function (event) {
+      $('.ball').each(function () {
+        const ball = $(this),
+          gameOffset = $('#game').offset(),
+          mouseX = event.pageX - gameOffset.left,
+          mouseY = event.pageY - gameOffset.top,
+          ballOffset = ball.position(),
+          // 球的中心點
+          ballX = ballOffset.left + ball.width() / 2,
+          ballY = ballOffset.top + ball.width() / 2,
+          digX = mouseX - ballX,
+          digY = mouseY - ballY,
+          dig = Math.sqrt(digX * digX + digY * digY),
+          // 感應半徑
+          digRange = 100
+        // 如果滑鼠與球的距離小於感應半徑，球就會彈起
+        if (dig < digRange && !ball.hasClass('dug')) {
+          ball.addClass('dug')
+          ball.stop()
+          let vy = -30
+          let vx = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 10 + 1)
+          let gravity = 0.8
+
+          let top = ball.offset().top - gameOffset.top
+          let left = ball.offset().left - gameOffset.left
+
+          const interval = setInterval(function () {
+            vy += gravity
+            top += vy
+            left += vx
+            ball.css({ top: `${top}px`, left: `${left}px` })
+          }, 20)
+
+          const niceUpWords = $('<img class="niceup" src="./images/niceup.png"></img>')
+          niceUpWords.css({ top: `${top - 60}px`, left: `${left - 30}px` })
+          $('#game').append(niceUpWords)
+          const niceUp = setTimeout(function () {
+            $('.niceup').fadeOut(300, function () {
+              niceUp.remove()
+            })
+          }, 600)
+
+          score++
+          $('#score').text(score)
+          setTimeout(function () {
+            ball.remove()
+          }, 400)
+
+        }
+      })
+    })
+
+    // 點擊讓球彈起並消失
+    // $('#game').on('click', '.ball', function () {
+    //   const ball = $(this)
+    //   const gameWidth = $('#game').width()
+    //   ball.stop()
+    //   let top = parseInt(ball.css('top'))
+    //   let left = parseInt(ball.css('left'))
+    //   let vy = -30
+    //   let vx = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 10 + 1)
+    //   let gravity = 0.8
+
+    //   const interval = setInterval(function () {
+    //     vy += gravity
+    //     top += vy
+    //     left += vx
+    //     ball.css({ top: `${top}px`, left: `${left}px` })
+    //   }, 20)
+
+    //   score++
+    //   $('#score').text(score)
+    //   setTimeout(function () {
+    //     ball.remove()
+    //   }, 600
+    // })
+
+
+    let playerCreated = false
+    let mouseMove = false
+
+    function playerMove() {
+      // 確認每次重新開始遊戲，前一次的 player 已經移除，才再創建一個新的 player
+      if (!playerCreated) {
+        $('#player').remove()
+        $('#game').append('<img src="./images/koga.png" id="player">')
+        playerCreated = true
+      }
+      if (!mouseMove) {
+        // 限制 player 只能在遊戲區間
+        $('#game').on('mousemove', function (event) {
+          const gameOffset = $('#game').offset()
+          const left = event.pageX - gameOffset.left - 35
+          const top = event.pageY - gameOffset.top - 50
+          $('#player').css({
+            left: left + 'px',
+            top: top + 'px'
+          })
+
+          // 根據滑鼠位置控制旋轉角度
+          const gameWidth = $('#game').width()
+          if (left < gameWidth / 2) {
+            $('#player').css({
+              transform: 'rotateY(0deg)'
+
+            });
+          } else if (left > gameWidth / 2) {
+            $('#player').css({
+              transform: 'rotateY(180deg)',
+              left: left - 140 + 'px',
+            })
+          }
+
+        })
+
+        // } else {
+        // $('#player').css({
+        // transform: 'rotateZ(0deg)',
+        // WebkitTransform: 'rotateZ(0deg)',
+        //   });
+        // }
+
+        mouseMove = true
+      }
+    }
+
+    function resetGame() {
+      $('#player').remove()
+      playerCreated = false
+      mouseMove = false
+      $('#game').off('mouseremove')
+    }
+
+    $('#levels-btn').on('click', function () {
+      $('#btns').css('display', 'none')
+      $('#levels-menu').css('display', 'block')
+    })
+
+    $('.level').each(function (index, level) {
+      $(level).on('click', function () {
+        $('#levels-menu').css('display', 'none')
+        $('#btns').css('display', 'block')
+
+      })
+    })
+
+    $('#rankings-btn').on('click', function () {
+      $('#btns').css('display', 'none')
+      $('#rankings-menu').css('display', 'block')
+    })
+
+    $('#close-btn').on('click', function () {
+      $('#rankings-menu').css('display', 'none')
+      $('#btns').css('display', 'block')
+    })
+
+
+
+
+  </script>
+</body>
+
+</html>
