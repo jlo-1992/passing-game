@@ -1,5 +1,5 @@
 # 🏐 排球接扣遊戲 passing game
-[Click here](<https://jlo-1992.github.io/passing-game/index.html>) to play the game.
+[Click here](<https://jlo-1992.github.io/passing-game/volleyball.html>) to play the game.
 
 這是一款互動式的網頁小遊戲，靈感來自排球接球訓練，玩家需在限時內操控角色接住不斷掉落的排球，獲得高分即可進入排行榜！  
 ## 🎮 遊戲功能特色    
