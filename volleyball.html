@@ -62,6 +62,13 @@
       background-color: gold;
       border-radius: 10px;
     }
+
+    #countdown {
+      color: #fcc90c;
+      font-weight: bold;
+      font-size: 3rem;
+      font-family: "Rubik", sans-serif;
+    }
   </style>
 </head>
 
@@ -137,11 +144,11 @@
       </div>
     </div>
 
+    <div id="countdown"></div>
     <div id="game">
       <!-- <img class="niceup" src="./images/niceup.png"> -->
       <!-- <img src="./images/passing.png" id="player"> -->
       <!-- <img src="./images/real-ball.png" class="ball"> -->
-      <div id="countdown"></div>
     </div>
   </div>
 
@@ -165,24 +172,48 @@
     let timer = 0;
     const highScore = { name: '', score: 0 }
     let generateBallTimer;
-    const levelSetting = LEVELS[currentLevel];
-    $("#currentLevel").text(currentLevel);
+    let levelSetting = LEVELS[currentLevel]
+    let count = 3
+    let countdownTimer;
 
+    $("#currentLevel").text(currentLevel);
     updateRankings()
 
-    // 開始按鈕
-    $('#start-btn').on('click', function () {
+    function showCountdown() {
+      count = 3
+      $('#btns').css('display', 'none')
+      $('#countdown').text(count).show()
+      countdownTimer = setInterval(() => {
+        if (count > 1) {
+          count--
+          $('#countdown').text(count).show()
+        } else {
+          clearInterval(countdownTimer)
+          $('#countdown').text('GAME START')
+          setTimeout(() => {
+            $('#countdown').hide()
+            startGame()
+          }, 1000)
+        }
+      }, 1000);
+    }
+
+    function startGame() {
+      console.log(currentLevel)
+      levelSetting = LEVELS[currentLevel];
       // 把 player 及 滑鼠綁定事件都刪除，才不會重複綁定造成畫面問題
       resetGame()
       // 綁定球員事件
       playerMove()
       $(this).attr('disabled', true)
-      $('#btns').css('display', 'none')
+
       $('#game').css('cursor', 'none')
       score = 0;
       $('#score').text(score)
       timeLeft = GAME_TIME
       $('#time-left').text(timeLeft)
+
+      generateBall()
       generateBallTimer = setInterval(generateBall, levelSetting.generateBallInterval)
 
       timer = setInterval(function () {
@@ -230,7 +261,9 @@
           }
         }
       }, 1000)
-    })
+    }
+
+
 
     let playerCreated = false
     let mouseMove = false
